@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  web:
+    privileged: true
+    build: .
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_ENV: development
+      FLASK_APP: main.py
+
+    ports:
+      - '5000:5000'
+
+    entrypoint:
+      - gunicorn
+      - --worker-class
+      - eventlet
+      - --bind
+      - 0.0.0.0:5000
+      - wsgi:main

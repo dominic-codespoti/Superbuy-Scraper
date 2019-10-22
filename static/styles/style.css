@@ -1,0 +1,210 @@
+@font-face {
+    font-family: Cicle; 
+    src: url(Cicle.ttf);
+}
+
+* {
+    box-sizing: border-box;
+	font-family: Cicle;
+	font-weight: normal;
+	font-style: normal;
+}
+
+h1 {
+	font-family: Cicle;
+	font-weight: normal;
+	font-style: normal;	
+	font-size: 55px;
+	font-variant: small-caps;
+}
+
+h2 {
+	font-family: Cicle;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 35px;
+}
+
+h3 {
+    font-family: Cicle;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 32px;
+}
+
+body {
+    background: white;
+    background-image: url("images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 6%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.main p {
+	font-size: 25px;
+}
+
+.header h2 {
+    font-size: 30px;
+    text-align: center;
+}
+
+.main ol {
+    text-align: center;;
+    width: 15%;
+    margin: 0 auto;
+    border: 3px solid;
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main ul {
+    text-align: center;
+    list-style-type: none;
+    width: 15%;
+    margin: 0 auto;
+    border: solid 5px;
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#heading {
+	text-shadow: -3px -3px 2px rgba(150, 150, 150, 1);
+}
+
+.main table {
+    display: inline-block; 
+    border: solid 5px;
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.main tr,td {
+    text-align: center;
+}
+
+.main tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.main th {
+    background-color: rgba(211, 211, 211, 0.8);
+}
+
+aside {
+    font-style: italic;
+    width: 25vw;
+    float: right;
+    border: solid 5px;
+    border-color: rgba(211, 211, 211, 0.4);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.header {
+    text-align: center;
+	padding: 3%;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.navigation {
+    background: rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    list-style: none;
+    text-align: center;
+}
+
+.navigation li{
+    display: inline;
+}
+
+.main img {
+    height: 20%;
+    width: 30%;
+    margin: 2%;
+}
+
+.navigation a {
+    background: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    text-decoration: none;
+    font-size: 100%;
+    display: inline-block;
+    padding: 1%;
+}
+
+.navigation a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.navigation a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.main {
+    margin-top: 2%;
+	padding: 1%;
+    background: rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+
+.footer {
+    padding: 5px;
+    margin: auto;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.3);
+	font-size: small;
+	flex-shrink: 0;
+	position: fixed;
+    bottom: 0;
+    height: 6%;
+    width: 100%;
+    margin-left: -2%;
+}
+
+object {
+	width:45%;
+	height:25vw;
+	margin: 2px auto;
+	padding-bottom: 2%;
+	float: none; 
+	clear: both;
+}
+
+@media only screen and (max-width: 500px) {
+ .main ul, ol    {
+        padding-right: 26%;
+    }
+    .main table {
+        width: 60%;
+    }
+    fieldset{
+        min-width: 100%;
+    }
+
+    .main {
+        margin-bottom: 15%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+ .main ul, ol    {
+        padding-right: 26%;
+    }
+    .main table {
+        width: 60%;
+    }
+    fieldset{
+        min-width: 100%;
+    }
+
+    .main {
+        margin-bottom: 15%;
+    }
+}

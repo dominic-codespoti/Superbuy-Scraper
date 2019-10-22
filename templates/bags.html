@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Superbuy Scraper</title>
+    <meta charset="utf-8" />
+	<meta name="description" content="Superbuy Scraping Site" />
+	<meta name="keywords" content="Superbuy, Python, Scraping" />
+	<meta name="author" content="Dominic" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+	<section class="header">
+		<h1>Superbuy Scraper</h1>
+		<h2>Welcome to Dominics Superbuy Scraper!</h2>
+	</section>
+	<section class="navigation">
+		<ul>
+		<li><a href="index.html">Index</a></li>
+		<li><a href="shirts.html">Shirts</a></li>
+		<li><a href="pants.html">Pants</a></li>
+		<li><a href="accessories.html">Accessories</a></li>
+		<li><a href="bags.html">Bags</a></li>
+		<li><a href="shoes.html">Shoes</a></li>
+		</ul>
+	</section>	
+		<section class="main">
+		<h1 id="heading">Bags</h1>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var socket = io.connect('http://' + document.domain + ':' + location.port + '/test')
+                var items_received = new Array("Name, Price, Link, Picture")
+                var split = []
+                var name = ""
+                var price = ""
+                var link  = ""
+                var i
+                var image = ""
+                var item_string = ""
+                var iteration
+                var previouslyFound
+                if (iteration == null)
+                    iteration = 0
+                socket.on('connect', function(msg) {
+                    if (msg != null)
+                    {
+                        items_received.push(JSON.stringify(msg))
+                        split = items_received[iteration].split(",")
+                        name = split[0]
+                        price = split[1]
+                        link = split[2]
+                        image = split[3]
+
+                        for (i = 0; i < iteration; i++)
+                        {
+                            if (items_received[i].includes(name) === true)
+                            {
+                                previouslyFound = true
+                            }
+                        }
+
+                        item_string = '<tr>' + '<td>' + name + '</td>' + '<td>' + price + '</td>'
+                            + '<td>' + link + '</td>' + '<td>' + '<img src="' + image + '" alt="" border=3 height=100 width=300></img>' + '</td>' + '</tr>'
+                        if (((((name.includes("bag") === true) || (name.includes("wallet") === true) || (name.includes("pouch") === true)))) && previouslyFound !== true)
+                        {
+                            $('section.main').append(item_string)
+                        }
+                        iteration = iteration + 1
+                        previouslyFound = false
+                    }
+                    })
+            })
+            </script>
+        </table>
+	</section>
+	<section class="footer">
+        <p>Created by <a href="mailto:domcodespoti@gmail.com">Dominic</a></p>
+	</section>
+</body>
+</html>
