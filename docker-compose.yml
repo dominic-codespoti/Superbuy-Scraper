@@ -7,7 +7,7 @@ services:
     environment:
       FLASK_DEBUG: 1
       FLASK_ENV: development
-      FLASK_APP: main.py
+      FLASK_APP: application.py
 
     ports:
       - '5000:5000'
@@ -18,4 +18,4 @@ services:
       - eventlet
       - --bind
       - 0.0.0.0:5000
-      - wsgi:main
+      - application:application

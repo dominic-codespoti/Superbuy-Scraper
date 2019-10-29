@@ -32,8 +32,9 @@ class Scraper(Thread):
 
             options = webdriver.ChromeOptions()
             options.add_argument('headless')
-
-            browser = webdriver.Chrome(executable_path='C:/Users/Dominic/PycharmProjects/Rep Archiver Flask/chromedriver.exe',
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('--no-sandbox')
+            browser = webdriver.Chrome(executable_path='/app/chromedriver',
                                        options=options)
             browser.get(url)
 
