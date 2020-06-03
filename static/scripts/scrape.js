@@ -2,10 +2,10 @@ function scrapeAndLoad(search_terms) {
     var socket = io.connect('http://' + document.domain + ':' + location.port + '/test')
     var items_received = new Array("Name, Price, Link, Picture")
     var previouslyFound = false
+    var iteration = 0;
     socket.on('connect', function(msg) {
         if (msg != null) {
             items_received.push(JSON.stringify(msg))
-            var iteration = 0;
             var split = items_received[items_received.length - 1].split(",")
             var name = split[0]
             var price = split[1]
