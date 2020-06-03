@@ -4,6 +4,8 @@ services:
   web:
     privileged: true
     build: .
+    volumes: 
+      - .:/app
     environment:
       FLASK_DEBUG: 1
       FLASK_ENV: development
@@ -12,10 +14,6 @@ services:
     ports:
       - '5000:5000'
 
-    entrypoint:
-      - gunicorn
-      - --worker-class
-      - eventlet
-      - --bind
-      - 0.0.0.0:5000
-      - application:application
+    command: >
+      bash -c "pip install -r requirements.txt
+      && gunicorn --worker-class eventlet --bind 0.0.0.0:5000 application:application"

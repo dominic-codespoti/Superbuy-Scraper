@@ -28,14 +28,15 @@ class Scraper(Thread):
     def Scrape(self):
         while not thread_stop_event.isSet():
 
+            CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
             url = "https://goat.pet/fr/sb/?spm=2101.892.N.N.df98185"
 
-            options = webdriver.ChromeOptions()
-            options.add_argument('headless')
-            options.add_argument('--disable-dev-shm-usage')
-            options.add_argument('--no-sandbox')
-            browser = webdriver.Chrome(executable_path='/app/chromedriver',
-                                       options=options)
+            chrome_options  = webdriver.ChromeOptions()
+            chrome_options.add_argument("headless")
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_options.add_argument('--no-sandbox')
+            browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
+                                       options=chrome_options)
             browser.get(url)
 
             try:
@@ -76,7 +77,6 @@ class Scraper(Thread):
 
     def run(self):
         self.Scrape()
-
 
 @application.route('/')
 @application.route('/index')
