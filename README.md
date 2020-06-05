@@ -2,4 +2,6 @@
 Scrapes, organizes and dynamically displays information from superbuy.
 
 ## Installation
-Utilize the docker-compose file to build an image of the server, which will begin running on the launch of the docker image.
+Utilize the docker-compose file to run the program with the following command:
+
+    docker-compose up
