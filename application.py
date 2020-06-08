@@ -1,5 +1,4 @@
 import eventlet
-
 eventlet.monkey_patch()
 
 from selenium import webdriver
@@ -10,15 +9,15 @@ from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup as soup
 from time import sleep
 from threading import Thread, Event
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
+from flask import Flask
+from flask_socketio import SocketIO
 
 application = Flask(__name__)
-application.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(application)
+socketio = SocketIO(application, cors_allowed_origins="*")
+socketio.server_options
+
 thread = Thread()
 thread_stop_event = Event()
-
 
 class Scraper(Thread):
     def __init__(self):
@@ -64,30 +63,18 @@ class Scraper(Thread):
                 image_container = container.findAll("img", {"class": "productImage"})
                 image = image_container[0]['src']
 
-                print(name)
-                print(price)
-                print(link)
-                print(image)
-
                 combined = name + ',' + price + ',' + link + ',' + image
+                print(combined)
 
-                socketio.emit('connect', {'number': combined}, namespace='/test')
-
+                socketio.emit('connect', {'item': combined}, namespace='/handle')
                 sleep(self.delay)
 
     def run(self):
         self.Scrape()
 
-@application.route('/')
-@application.route('/index')
-@application.route('/index.html')
-def index():
-    return render_template('index.html',
-                           title='Home')
 
-
-@socketio.on('connect', namespace='/test')
-def test_connect():
+@socketio.on('connect', namespace='/handle')
+def connect():
     global thread
     print('Client connected')
     if not thread.isAlive():
@@ -96,35 +83,9 @@ def test_connect():
         thread.start()
 
 
-@socketio.on('disconnect', namespace='/test')
-def test_disconnect():
+@socketio.on('disconnect', namespace='/handle')
+def disconnect():
     print('Client disconnected')
-
-
-@application.route('/shirts.html')
-def shirts():
-    return render_template('shirts.html')
-
-
-@application.route('/accessories.html')
-def accessories():
-    return render_template('accessories.html')
-
-
-@application.route('/bags.html')
-def bags():
-    return render_template('bags.html')
-
-
-@application.route('/pants.html')
-def pants():
-    return render_template('pants.html')
-
-
-@application.route('/shoes.html')
-def shoes():
-    return render_template('shoes.html')
-
 
 if __name__ == '__main__':
     socketio.run(application)
