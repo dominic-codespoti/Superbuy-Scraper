@@ -4,61 +4,63 @@ import io from 'socket.io-client';
 import NavBar from '../Components/NavBar'
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
+import Table from '../Components/Table'
 
-function App() {
-  return (
-    <main>
-      <Header title="Clothes"></Header>
-      <NavBar></NavBar>
-      <section class="main">
-        <h1 id="heading">Clothing</h1>
-        {
-          scrapeAndLoad()
-        }
-      </section>		
-      <Footer></Footer>
-    </main>
-  );
-}
+class Scraper extends React.Component {
+  constructor(props, context){
+    super(props, context);
+    this.getItemFromSocket = this.getItemFromSocket.bind(this);
+  }
 
-function scrapeAndLoad() {
-  var search_terms = ["shirt", "t-shirt", "crewneck", "hoodie", "jumper"]
-  var socket = io.connect('http://' + document.domain + ':5000/handle')
-  var items_received = new Array("Name, Price, Link, Picture")
-  var previouslyFound = false
-  var iteration = 0
-  socket.on('connect', function(msg) {
-    console.log(msg)
-      if (msg != null) {
-          items_received.push(JSON.stringify(msg))
-          var split = items_received[items_received.length - 1].split(",")
-          var name = split[0]
-          var price = split[1]
-          var link = split[2]
-          var image = split[3]
+  state = {
+    data: []
+  };
 
-          for (var i = 0; i < iteration; i++) {
-              if (items_received[i].includes(name) === true) {
-                  previouslyFound = true
-              }
-          }
+  componentDidMount = () => {
+    this.getItemFromSocket(this);
+  }
 
-          var item_string = '<tr>'
-          + '<td>' + name + '</td>'
-          + '<td>' + price + '</td>'
-          + '<td>' + link + '</td>'
-          + '<td> <img src="' + image + '" alt="" border=3 height=100 width=300></img> </td>'
-          + '</tr>'
+  render() {
+    return (
+      <main>
+        <Header title="Clothes"></Header>
+        <NavBar></NavBar>
+        <section class="main">
+          <h1 id="heading">Clothing</h1>
+          <Table item={this.state.data}></Table>
+        </section>
+        <Footer></Footer>
+      </main>
+    );
+  }
 
-          if (search_terms.some(term => name.toLowerCase().includes(term)) && previouslyFound === false) {
-              var node = React.findDOMNode(this); //todo, fix in react
-              node.append(item_string)
-          }
+  getItemFromSocket = () => {
+    var socket = io.connect('http://' + document.domain + ':5000/handle')
+    var items_received = new Array("Name, Price, Link, Picture")
+    var context = this
+    socket.on('connect', function(msg){
+      context.createItem(msg, items_received)
+    })
+  }
 
-          previouslyFound = false
-          iteration += 1
+  createItem = (msg, items_received) =>{
+    if (msg != null) {
+      var itemAsJson = JSON.parse(JSON.stringify(msg))
+      var itemAsArray = [itemAsJson["name"], itemAsJson["price"], itemAsJson["link"], itemAsJson["image"]]
+
+      if (items_received.some(term => itemAsJson["name"].toLowerCase().includes(term))){
+        console.log("Already found " + itemAsJson["name"])
+        return
       }
-  })
+
+      items_received.push(itemAsArray)
+      
+      var items = this.state.data;
+      items.push(itemAsArray);
+      this.setState({data: items});
+    }
+  }
 }
 
-export default App;
+
+export default Scraper;

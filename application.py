@@ -48,8 +48,8 @@ class Scraper(Thread):
                 print("Loading took too much time!")
 
             pageAsSoup = soup(html, 'html.parser')
-
             containers = pageAsSoup.findAll("a", {"class": "productWrapper"})
+
             for container in containers:
                 title_container = container.findAll("p", {"class": "title"})
                 name = title_container[0].text
@@ -62,11 +62,15 @@ class Scraper(Thread):
 
                 image_container = container.findAll("img", {"class": "productImage"})
                 image = image_container[0]['src']
+            
+                json = {
+                    "name": name,
+                    "price": price,
+                    "link": link,
+                    "image": image
+                }
 
-                combined = name + ',' + price + ',' + link + ',' + image
-                print(combined)
-
-                socketio.emit('connect', {'item': combined}, namespace='/handle')
+                socketio.emit('connect', json, namespace='/handle')
                 sleep(self.delay)
 
     def run(self):
