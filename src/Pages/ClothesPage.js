@@ -51,7 +51,7 @@ class Scraper extends React.Component {
         return
       }
 
-      items_received.push(itemAsJson)
+      items_received.push(itemAsJson) //todo: render items dynamically in tabbed tables
       
       var items = this.state.data;
       items.push(itemAsJson);

@@ -79,7 +79,7 @@ def createJsonFromContainer(container):
     image_container = container.findAll("img", {"class": "productImage"})
     image = image_container[0]['src']
     imageName = image.split("/")[-1]
-    urllib.request.urlretrieve(image, imageName)
+    urllib.request.urlretrieve(image, imageName) #todo: delete photo after prediction
 
     classification = predict(imageName)
 
@@ -88,7 +88,7 @@ def createJsonFromContainer(container):
         "price": price,
         "link": link,
         "image": image,
-        "classification": classification
+        "classification": classification #todo: add classification for "other"
     }
 
 
