@@ -1,16 +1,23 @@
 import eventlet
 eventlet.monkey_patch()
 
+import urllib.request
+import os
+
+from time import sleep
+from threading import Thread, Event
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup as soup
-from time import sleep
-from threading import Thread, Event
 from flask import Flask
 from flask_socketio import SocketIO
+
+from model.predict import predict
+
+
 
 application = Flask(__name__)
 socketio = SocketIO(application, cors_allowed_origins="*")
@@ -51,30 +58,38 @@ class Scraper(Thread):
             containers = pageAsSoup.findAll("a", {"class": "productWrapper"})
 
             for container in containers:
-                title_container = container.findAll("p", {"class": "title"})
-                name = title_container[0].text
-
-                price_container = container.findAll("span", {"class": "price"})
-                price = price_container[0].text
-                price = "¥ " + price
-
-                link = container['href']
-
-                image_container = container.findAll("img", {"class": "productImage"})
-                image = image_container[0]['src']
-            
-                json = {
-                    "name": name,
-                    "price": price,
-                    "link": link,
-                    "image": image
-                }
-
+                json = createJsonFromContainer(container)
+                print(json)
                 socketio.emit('connect', json, namespace='/handle')
                 sleep(self.delay)
 
     def run(self):
         self.Scrape()
+
+def createJsonFromContainer(container):
+    title_container = container.findAll("p", {"class": "title"})
+    name = title_container[0].text
+
+    price_container = container.findAll("span", {"class": "price"})
+    price = price_container[0].text
+    price = "¥ " + price
+
+    link = container['href']
+
+    image_container = container.findAll("img", {"class": "productImage"})
+    image = image_container[0]['src']
+    imageName = image.split("/")[-1]
+    urllib.request.urlretrieve(image, imageName)
+
+    classification = predict(imageName)
+
+    return {
+        "name": name,
+        "price": price,
+        "link": link,
+        "image": image,
+        "classification": classification
+    }
 
 
 @socketio.on('connect', namespace='/handle')

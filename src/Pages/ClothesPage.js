@@ -34,29 +34,27 @@ class Scraper extends React.Component {
     );
   }
 
-  getItemFromSocket = () => {
+  getItemFromSocket() {
     var socket = io.connect('http://' + document.domain + ':5000/handle')
     var items_received = new Array("Name, Price, Link, Picture")
     var context = this
-    socket.on('connect', function(msg){
-      context.createItem(msg, items_received)
-    })
+    socket.on('connect', msg => context.createItem(msg, items_received))
   }
 
-  createItem = (msg, items_received) =>{
+  createItem(msg, items_received) {
+    console.log(msg)
     if (msg != null) {
       var itemAsJson = JSON.parse(JSON.stringify(msg))
-      var itemAsArray = [itemAsJson["name"], itemAsJson["price"], itemAsJson["link"], itemAsJson["image"]]
 
       if (items_received.some(term => itemAsJson["name"].toLowerCase().includes(term))){
         console.log("Already found " + itemAsJson["name"])
         return
       }
 
-      items_received.push(itemAsArray)
+      items_received.push(itemAsJson)
       
       var items = this.state.data;
-      items.push(itemAsArray);
+      items.push(itemAsJson);
       this.setState({data: items});
     }
   }

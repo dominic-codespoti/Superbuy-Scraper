@@ -26,9 +26,11 @@ services:
       FLASK_DEBUG: 1
       FLASK_ENV: development
       FLASK_APP: application.py
+      PYTHONUNBUFFERED: "true"
+      XLA_FLAGS: --xla_hlo_profile
     ports:
       - '5000:5000'
     command: >
       bash -c "pip install --upgrade pip 
       && pip install -r requirements.txt
-      && gunicorn --worker-class eventlet --bind 0.0.0.0:5000 application:application"
+      && gunicorn --worker-class eventlet --bind 0.0.0.0:5000 application:application --capture-output"

@@ -24,4 +24,6 @@ yarn-error.log*
 
 model/img/train
 model/img/test
+model/img/logs
+model/img/ClothingModel -*
 __pycache__
