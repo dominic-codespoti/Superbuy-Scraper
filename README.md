@@ -1,7 +1,7 @@
 # Superbuy Scraper
 This combination of a Flask Server and React Client passively scrapes the Superbuy live purchase feed and categorizes it using a ML model, dynamically injecting it into the appropriate table.
 
-![Examples](https://gyazo.com/ad75e0cb8f915707c338320cdde9a927)
+![Examples](https://i.imgur.com/dadGP0D.gif)
 
 ## Flask Socket.IO Server
 
