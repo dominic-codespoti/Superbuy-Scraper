@@ -9,10 +9,13 @@ function App() {
     <main>
       <Header title="Superbuy Scraper"></Header>
       <NavBar></NavBar>
-      <section class="main">
+      <section className="main">
         <h1>Welcome!</h1>
-        <p>To do list: Fix links, add images properly, automate python script in the background</p>		
-      </section>		
+        <p>
+          To do list: Fix links, add images properly, automate python script in
+          the background
+        </p>
+      </section>
       <Footer></Footer>
     </main>
   );

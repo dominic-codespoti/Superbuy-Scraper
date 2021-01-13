@@ -25,7 +25,7 @@ class Scraper extends React.Component {
       <main>
         <Header title="Clothes"></Header>
         <NavBar></NavBar>
-        <section class="main">
+        <section className="main">
           <h1 id="heading">Clothing</h1>
           <Table item={this.state.data}></Table>
         </section>

@@ -5,7 +5,7 @@ class NavBar extends React.Component {
     
     render() {
       return (
-        <section class="navigation">
+        <section className="navigation">
             <ul>
                 <Link to="/"> Index </Link>
                 <Link to="/clothes"> Clothes </Link>

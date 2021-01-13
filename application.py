@@ -1,12 +1,14 @@
+from model.predict import predict
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
+
 import eventlet
 eventlet.monkey_patch()
-
 import urllib.request
 import os
 
 from time import sleep
 from threading import Thread, Event
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -15,10 +17,6 @@ from bs4 import BeautifulSoup as soup
 from flask import Flask
 from flask_socketio import SocketIO
 
-from model.predict import predict
-
-
-
 application = Flask(__name__)
 socketio = SocketIO(application, cors_allowed_origins="*")
 socketio.server_options
@@ -26,6 +24,12 @@ socketio.server_options
 thread = Thread()
 thread_stop_event = Event()
 
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("headless")
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--no-sandbox')
+browser = webdriver.Chrome(ChromeDriverManager().install(),
+                           options=chrome_options)
 class Scraper(Thread):
     def __init__(self):
         self.delay = 1
@@ -34,15 +38,7 @@ class Scraper(Thread):
     def Scrape(self):
         while not thread_stop_event.isSet():
 
-            CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
-            url = "https://goat.pet/fr/sb/?spm=2101.892.N.N.df98185"
-
-            chrome_options  = webdriver.ChromeOptions()
-            chrome_options.add_argument("headless")
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--no-sandbox')
-            browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,
-                                       options=chrome_options)
+            url = "https://goat.pet/fr/sb/?spm=2101.892.N.N.df98185" # Site no longer works
             browser.get(url)
 
             try:
